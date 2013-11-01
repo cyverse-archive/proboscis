@@ -2,8 +2,28 @@
   (:gen-class)
   (:use [clojure.tools.cli :only [cli]]
         [slingshot.slingshot :only [throw+ try+]])
-  (:require [clojurewerkz.elastisch.rest :as esr]
+  (:require [clojure.java.io :as io]
+            [cheshire.core :as json]
+            [clojurewerkz.elastisch.rest :as esr]
             [clojurewerkz.elastisch.rest.index :as esi]))
+
+(def ^:private mapping-files ["mappings/data/file.json" "mappings/data/folder.json"])
+(def ^:private settings-file "settings.json")
+
+(def ^:private index "data")
+
+(defmacro ^:private trap
+  [[banner] & body]
+  `(try+
+     (do ~@body)
+     (catch #(and (map? %) (contains? % :message)) {msg# :message}
+       (binding [*out* *err*] (println msg#))
+       (System/exit 1))
+     (catch Object e#
+       (binding [*out* *err*]
+         (println "Unexpected Exception: " (str e#))
+         (.printStackTrace e#))
+       (System/exit 1))))
 
 (defn- to-int
   [s]
@@ -13,63 +33,29 @@
   [args]
   (cli args
        ["-h" "--host" "The host where ElasticSearch is running." :default "localhost"]
-       ["-p" "--port" "The port that ElasticSearch is listening to." :parse-fn to-int
-        :default 31338]
-       ["-i" "--index" "The name of the index to create." :default "iplant"]
-       ["-s" "--shards" "The total number of shards." :parse-fn to-int :default 1]
-       ["-r" "--replicas" "The number of replicas of each shard." :parse-fn to-int
-        :default 0]
+       ["-p" "--port" "The port that ElasticSearch is listening to." :parse-fn to-int :default 9200]
        ["-?" "--[no-]help" "Display this help text."]))
 
-(defmacro ^:private trap
-  [[banner] & body]
-  `(try+
-    (do ~@body)
-    (catch #(and (map? %) (contains? % :message)) {msg# :message}
-      (binding [*out* *err*] (println msg#))
-      (System/exit 1))
-    (catch Object e#
-      (binding [*out* *err*]
-        (println "Unexpected Exception: " (str e#))
-        (.printStackTrace e#))
-      (System/exit 1))))
+(defn- load-json
+  [file]
+  (json/parse-string (slurp file)))
 
-(defn- idx-settings
-  [shards replicas]
-  {:number_of_shards   shards
-   :number_of_replicas replicas})
-
-(defn- idx-mapping
+(defn- load-mappings
   []
-  (let [irods-entity {:type "string" :analyzer "irods_entity"}
-        irods-path   {:type "string" :analyzer "irods_path"}
-        not-analyzed {:type "string" :index "not_analyzed"}
-        date         {:type "date"}]
-    {:properties
-     {:name        irods-entity
-      :parent_path irods-path
-      :creator     {:properties {:name not-analyzed
-                                 :zone not-analyzed}}
-      :create_date date
-      :modify_date date
-      :acl         {:properties {:name       not-analyzed
-                                 :zone       not-analyzed
-                                 :permission not-analyzed}}}}))
+  (map (comp load-json io/resource) mapping-files))
 
-(defn- idx-mappings
-  []
-  {:file   (idx-mapping)
-   :folder (idx-mapping)})
+(defn- fmt-mappings
+  [mappings]
+  (letfn [(mk-entry [mapping] [(key (first mapping)) mapping])]
+    (into {} (map mk-entry mappings))))
 
-(defn- define-index
-  [index shards replicas]
-  (esi/create index :settings (idx-settings shards replicas) :mappings (idx-mappings)))
-
-(defn- ensure-index-defined
-  [{:keys [host port index shards replicas]}]
+(defn- init-es
+  [{:keys [host port]}]
   (esr/connect! (str "http://" host ":" port))
   (when-not (esi/exists? index)
-    (define-index index shards replicas)))
+    (esi/create index
+                :settings (load-json (io/resource settings-file))
+                :mappings (fmt-mappings (load-mappings)))))
 
 (defn -main
   [& args]
@@ -78,7 +64,7 @@
       (println banner)
       (System/exit 0))
     (trap [banner]
-      (ensure-index-defined opts))))
+      (init-es opts))))
 
 ;; Local Variables:
 ;; mode: clojure

@@ -1,0 +1,71 @@
+{
+  "folder" : {
+    "properties" : {
+      "id" : {
+        "type"     : "string",
+        "analyzer" : "irods_path" 
+      },
+      "user-permissions" : {
+        "_comment"   : "this is an array",
+        "type"       : "nested",
+        "properties" : {
+          "permission" : {
+            "_comment" : "can be one of \"read\", \"write\" or \"own\"",
+            "type"     : "string",
+            "index"    : "not_analyzed" 
+          },
+          "user" : {
+            "type"       : "nested",
+            "properties" : {
+              "username" : {
+                "type"  : "string",
+                "index" : "not_analyzed" 
+              },
+              "zone" : {
+                "type"  : "string",
+                "index" : "not_analyzed"
+              } 
+            }
+          }
+        }
+      },
+      "creator" : {
+        "properties" : {
+          "name" : {
+            "type"  : "string",
+            "index" : "not_analyzed" 
+          },
+          "zone" : {
+            "type"  : "string",
+            "index" : "not_analyzed" 
+          }
+        }
+      },
+      "date-created" : {
+        "type" : "date" 
+      },
+      "date-modified" : {
+        "type" : "date" 
+      },
+      "label" : {
+        "type"     : "string",
+        "analyzer" : "irods_entity" 
+      },
+      "metadata" : {
+        "_comment"   : "this is an array",
+        "type"       : "nested",
+        "properties" : {
+          "attribute" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
