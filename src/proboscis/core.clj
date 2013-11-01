@@ -1,4 +1,4 @@
-(ns proboscus.core
+(ns proboscis.core
   (:gen-class)
   (:use [clojure.tools.cli :only [cli]]
         [slingshot.slingshot :only [throw+ try+]])

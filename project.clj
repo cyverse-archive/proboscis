@@ -1,4 +1,4 @@
-(defproject proboscus "0.1.0-SNAPSHOT"
+(defproject proboscis "0.1.0-SNAPSHOT"
   :description "A utility for creating an ElasticSearch index and its mappings for Infosquito."
   :url "http://www.iplantcollaborative.org"
   :license {:name "BSD License"
@@ -12,5 +12,5 @@
   :plugins [[org.iplantc/lein-iplant-cmdtar "0.1.0-SNAPSHOT"]]
   :repositories [["iplantCollaborative"
                   "http://projects.iplantcollaborative.org/archiva/repository/internal/"]]
-  :aot [proboscus.core]
-  :main proboscus.core)
+  :aot [proboscis.core]
+  :main proboscis.core)

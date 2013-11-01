@@ -1,17 +1,17 @@
-# proboscus
+# proboscis
 
 A Clojure utility to initialize the ElasticSearch index for iPlant Collaborative's Data Commons.
 
 ## Usage
 
 ```
-proboscus -h host -p port
-proboscus --help
+proboscis -h host -p port
+proboscis --help
 ```
 
 ## Arguments
 
-Both of the arguments to proboscus are optional and have default values that will be used if no
+Both of the arguments to proboscis are optional and have default values that will be used if no
 other values is specified.
 
 ### -h --host
