@@ -1,6 +1,7 @@
 # proboscis
 
-A Clojure utility to initialize the ElasticSearch index for iPlant Collaborative's Data Commons.
+A Clojure utility to initialize the ElasticSearch index for iPlant Collaborative's Data Commons. If
+the index already exists, it will delete the index before initialization.
 
 ## Usage
 

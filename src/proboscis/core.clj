@@ -52,10 +52,10 @@
 (defn- init-es
   [{:keys [host port]}]
   (esr/connect! (str "http://" host ":" port))
-  (when-not (esi/exists? index)
-    (esi/create index
-                :settings (load-json (io/resource settings-file))
-                :mappings (fmt-mappings (load-mappings)))))
+  (when (esi/exists? index) (esi/delete index))
+  (esi/create index
+              :settings (load-json (io/resource settings-file))
+              :mappings (fmt-mappings (load-mappings))))
 
 (defn -main
   [& args]
