@@ -54,7 +54,7 @@
         "type"     : "string",
         "analyzer" : "irods_entity" 
       },
-      "info-type" : {
+      "media-type" : {
         "type"  : "string",
         "index" : "not_analyzed"
       },
