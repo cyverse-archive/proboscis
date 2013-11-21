@@ -5,7 +5,7 @@
         "type"     : "string",
         "analyzer" : "irods_path" 
       },  
-      "user-permissions" : { 
+      "userPermissions" : {
         "_comment"   : "this is an array",
         "type"       : "nested",
         "properties" : { 
@@ -41,20 +41,20 @@
           }   
         }   
       },  
-      "date-created" : { 
+      "dateCreated" : {
         "type" : "date" 
       },  
-      "date-modified" : { 
+      "dateModified" : {
         "type" : "date" 
       },
-      "file-size" : {
+      "fileSize" : {
         "type" : "long"
       },  
       "label" : { 
         "type"     : "string",
         "analyzer" : "irods_entity" 
       },
-      "file-type" : {
+      "fileType" : {
         "type"  : "string",
         "index" : "not_analyzed"
       },
