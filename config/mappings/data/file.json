@@ -5,6 +5,10 @@
         "type"     : "string",
         "analyzer" : "irods_path" 
       },  
+      "path" : { 
+        "type"     : "string",
+        "analyzer" : "irods_path" 
+      },  
       "userPermissions" : {
         "_comment"   : "this is an array",
         "type"       : "nested",
