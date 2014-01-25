@@ -2,8 +2,8 @@
   "folder" : {
     "properties" : {
       "id" : {
-        "type"     : "string",
-        "analyzer" : "irods_path" 
+        "type"  : "string",
+        "index" : "irods_path"
       },
       "path" : {
         "type"     : "string",
@@ -45,13 +45,15 @@
         "type"       : "nested",
         "properties" : {
           "attribute" : {
-            "type" : "string"
+            "type"     : "string",
+            "analyzer" : "irods_entity"
           },
           "value" : {
             "type" : "string"
           },
           "unit" : {
-            "type" : "string"
+            "type"     : "string",
+            "analyzer" : "keyword"
           }
         }
       }
