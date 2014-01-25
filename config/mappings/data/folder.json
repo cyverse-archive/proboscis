@@ -3,7 +3,7 @@
     "properties" : {
       "id" : {
         "type"  : "string",
-        "index" : "irods_path"
+        "index" : "not_analyzed"
       },
       "path" : {
         "type"     : "string",
