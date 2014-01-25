@@ -9,8 +9,7 @@
         },
         "irods_path":   {
           "type": "custom",
-          "tokenizer": "irods_path",
-          "filter": ["asciifolding", "lowercase"]
+          "tokenizer": "irods_path"
         }
       },
       "tokenizer": {
