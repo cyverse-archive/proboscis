@@ -1,6 +1,7 @@
 (ns proboscis.core
   (:gen-class)
-  (:use [clojure.tools.cli :only [cli]]
+  (:use [clojure.pprint :only [pprint]]
+        [clojure.tools.cli :only [cli]]
         [slingshot.slingshot :only [throw+ try+]])
   (:require [clojure.java.io :as io]
             [cheshire.core :as json]
@@ -16,10 +17,16 @@
   [[banner] & body]
   `(try+
      (do ~@body)
-     (catch #(and (map? %) (contains? % :message)) {msg# :message}
+     (catch (every-pred map? :message) {msg# :message}
        (binding [*out* *err*] (println msg#))
        (System/exit 1))
-     (catch Object e#
+     (catch (every-pred map? :body) {body# :body}
+       (binding [*out* *err*] (println body#))
+       (System/exit 1))
+     (catch map? m#
+       (binding [*out* *err*] (pprint m#))
+       (System/exit 1))
+     (catch Throwable e#
        (binding [*out* *err*]
          (println "Unexpected Exception: " (str e#))
          (.printStackTrace e#))
