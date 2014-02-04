@@ -2,6 +2,10 @@
   "file" : { 
     "properties" : { 
       "id" : { 
+        "type"  : "string",
+        "index" : "not_analyzed"
+      },  
+      "path" : { 
         "type"     : "string",
         "analyzer" : "irods_path" 
       },  
@@ -15,31 +19,16 @@
             "index"    : "not_analyzed" 
           },  
           "user" : { 
-            "type"       : "nested",
-            "properties" : { 
-              "username" : { 
-                "type"  : "string",
-                "index" : "not_analyzed" 
-              },  
-              "zone" : { 
-                "type"  : "string",
-                "index" : "not_analyzed"
-              }   
-            }   
+            "_comment" : "must be of the form name#zone",
+            "type"     : "string",
+            "index"    : "not_analyzed"
           }   
         }   
       },  
-      "creator" : { 
-        "properties" : { 
-          "name" : { 
-            "type"  : "string",
-            "index" : "not_analyzed" 
-          },  
-          "zone" : { 
-            "type"  : "string",
-            "index" : "not_analyzed" 
-          }   
-        }   
+      "creator" : {
+        "_comment" : "must be of the form name#zone", 
+        "type"     : "string",
+        "index"    : "not_analyzed" 
       },  
       "dateCreated" : {
         "type" : "date" 
@@ -63,13 +52,15 @@
         "type"       : "nested",
         "properties" : { 
           "attribute" : { 
-            "type" : "string"
+            "type"     : "string",
+            "analyzer" : "irods_entity"
           },  
           "value" : { 
             "type" : "string"
           },  
           "unit" : { 
-            "type" : "string"
+            "type" :     "string",
+            "analyzer" : "keyword"
           }   
         }   
       }   
