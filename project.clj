@@ -1,4 +1,4 @@
-(defproject proboscis "0.2.1-SNAPSHOT"
+(defproject org.iplantc/proboscis "0.2.1-SNAPSHOT"
   :description "A utility for creating an ElasticSearch index and its mappings for Infosquito."
   :url "http://www.iplantcollaborative.org"
   :license {:name "BSD License"
