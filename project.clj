@@ -1,4 +1,4 @@
-(defproject org.iplantc/proboscis "0.2.1-SNAPSHOT"
+(defproject org.iplantc/proboscis "0.2.1"
   :description "A utility for creating an ElasticSearch index and its mappings for Infosquito."
   :url "http://www.iplantcollaborative.org"
   :license {:name "BSD License"
@@ -15,7 +15,7 @@
                  [clojurewerkz/elastisch "1.2.0"]
                  [slingshot "0.10.3"]]
   :resource-paths ["config"]
-  :plugins [[org.iplantc/lein-iplant-cmdtar "0.1.2-SNAPSHOT"]]
+  :plugins [[org.iplantc/lein-iplant-cmdtar "0.1.2"]]
   :repositories [["sonatype-nexus-snapshots"
                   {:url "https://oss.sonatype.org/content/repositories/snapshots"}]]
   :deploy-repositories [["sonatype-nexus-staging"
